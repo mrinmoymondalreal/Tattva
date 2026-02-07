@@ -60,12 +60,13 @@ class Div(Layout):
             currHeight += h + c_mt + c_mb # Accumulate height
 
       # Finally, set the size of this container (Inner content + Padding)
-      self.setSize(currWidth + pl + pr, currHeight + pt + pb)
+      self.setSize(currWidth, currHeight)
       
       return self.getPos() + self.getSize()
   
 
   def draw(self):
+    if self.__ID__ == "div1": print(self.getPos())
     rect(self.getPos(), self.getSize(), self.styles.background_color)
     for child in self.children:
       child.draw()
