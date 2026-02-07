@@ -15,6 +15,7 @@ class Style:
     self.background_color = args.get("background_color", (255, 255, 255, 255))  # Default white background
     self.border_color = args.get("border_color", (0, 0, 0, 255))  # Default black border
     self.border_width = args.get("border_width", 0)
+    self.align_self = args.get("align_self", None)
 
     padding = args.get("padding", (0, 0, 0, 0))
     margin = args.get("margin", (0, 0, 0, 0))
