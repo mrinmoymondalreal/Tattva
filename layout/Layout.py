@@ -27,7 +27,7 @@ class Layout:
 
   def computeLayout(self, parent=None, index = 0):
     self.parent = parent
-
+    self.index = index
 
     return self.getPos() + self.getSize()
   
@@ -38,27 +38,60 @@ class Layout:
     if self.parent:
       parent_x, parent_y = self.parent.getPos()
       parent_w, parent_h = self.parent.getSize()
+      pt, pl, pb, pr = self.parent.styles.padding
+      parentFlexDirection = self.parent.styles.direction
+      justifyContent = self.parent.styles.justify_content
+      alignItems = self.parent.styles.align_items
+      index = self.index
 
-      if self.parent.styles.justify_content == "center":
-        if self.parent.styles.direction == "row": x = x + ((parent_w//2) - (self.parent.saved_width//2))
+      changed = []
+
+      justifyContent = self.styles.align_self or justifyContent if parentFlexDirection == "column" else justifyContent
+      alignItems = self.styles.align_self or alignItems if parentFlexDirection == "row" else alignItems
+      
+      if justifyContent == "center":
+        if parentFlexDirection == "row": x = x + ((parent_w//2) - (self.parent.saved_width//2))
         else: x = parent_x + (parent_w - my_w) // 2
 
-      if self.parent.styles.justify_content == "right":
-        if self.parent.styles.direction == "row": x = x + (parent_w - self.parent.saved_width)
-        else: x = parent_x + (parent_w - my_w)
+      if justifyContent == "flex-end":
+        if parentFlexDirection == "row": x = x + (parent_w - self.parent.saved_width) - pt - pb
+        else: x = parent_x + (parent_w - my_w) - pr
 
-      if self.parent.styles.align_items == "center":
-        if self.parent.styles.direction == "column": y = y + ((parent_h//2) - (self.parent.saved_height//2))
+      if justifyContent == "space-between":
+        if parentFlexDirection == "row":
+          if len(self.parent.children) > 1: x = x + (index * ((parent_w - self.parent.saved_width - pl - pr) // (len(self.parent.children) - 1)))
+        else:
+          if len(self.parent.children) > 1: y = y + (index * ((parent_h - self.parent.saved_height - pt - pb) // (len(self.parent.children) - 1)))
+          changed.append("space-between")
+
+      if alignItems == "center":
+        if parentFlexDirection == "column": y = y + ((parent_h//2) - (self.parent.saved_height//2))
         else: y = parent_y + (parent_h - my_h) // 2
+        changed.append("align-items-center")
 
-      if self.parent.styles.align_items == "bottom":
-        if self.parent.styles.direction == "column": y = y + (parent_h - self.parent.saved_height)
-        else: y = parent_y + (parent_h - my_h)
+      if alignItems == "flex-end":
+        if parentFlexDirection == "column": y = y + (parent_h - self.parent.saved_height) - pt - pb
+        else: y = parent_y + (parent_h - my_h) - pb
+        changed.append("align-items-flex-end")
+
+    if self.__ID__ == "div1": print(y, changed)
 
     return (x, y)
   
   def getSize(self):
-    return (self.width, self.height)
+    pt, pl, pb, pr = self.styles.padding
+    height = self.height + pt + pb
+    width = self.width + pl + pr
+
+    if self.parent:
+      parentFlexDirection = self.parent.styles.direction
+      alignItems = self.parent.styles.align_items
+      alignItems = self.styles.align_self or alignItems if parentFlexDirection == "row" else alignItems
+      if alignItems == "stretch":
+        if parentFlexDirection == "row": height = self.parent.height
+        else: width = self.parent.width
+
+    return (width, height)
 
   def setPos(self, x, y):
     if x:
