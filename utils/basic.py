@@ -32,4 +32,5 @@ def normalize_quad(value):
     # Fallback (optional)
     return (0, 0, 0, 0)
 
-# print(os.path.join(cwd, "fonts", "TIMES.TTF"))
+def map_value(value, start1, stop1, start2, stop2):
+    return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))
