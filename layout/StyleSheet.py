@@ -24,6 +24,13 @@ class Style:
     justify_content = args.get("justify_content", "flex-start")
     align_items = args.get("align_items", "flex-start")
 
+    border_width = args.get("border_width", 0)
+    border_radius = args.get("border_radius", (0, 0, 0, 0))
+    border_color = args.get("border_color", (0, 0, 0, 255))
+
+    self.border_radius = normalize_quad(border_radius)
+    self.border_width = border_width
+    self.border_color = border_color
 
     # margin = (top, right, bottom, left)
     self.margin = normalize_quad(margin)
