@@ -1,4 +1,4 @@
-from layout.Layout import Layout
+from .Layout import Layout
 
 class Root(Layout):
   def __init__(self, children = []):
@@ -10,4 +10,6 @@ class Root(Layout):
       child.computeLayout()
 
     for child in self.children:
+      if hasattr(child, "update"):
+        child.update()
       child.draw()

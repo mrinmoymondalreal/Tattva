@@ -1,4 +1,4 @@
-from utils.basic import normalize_quad
+from ..utils.basic import normalize_quad
 
 
 LAYOUT_MODES = {

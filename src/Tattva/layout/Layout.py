@@ -1,6 +1,6 @@
 
-from layout.StyleSheet import LAYOUT_MODES
-from utils.basic import generateId
+from .StyleSheet import LAYOUT_MODES
+from ..utils.basic import generateId
 
 
 class Layout:
@@ -122,3 +122,5 @@ class Layout:
     if height:
       self.height = min(max(height, self.min_height), self.max_height)
 
+  def update(self):
+    pass

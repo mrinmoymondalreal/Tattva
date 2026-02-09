@@ -1,7 +1,6 @@
-from logging import root
 from pyray import *
 
-from utils.draw import initDefaults, rect
+from .utils.draw import initDefaults, rect
 
 def App(size, title, root):
     width, height = get_screen_width(), get_screen_height()

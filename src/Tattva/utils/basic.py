@@ -6,7 +6,7 @@ def joinPath(*args):
   return os.path.join(*args)
 
 def getfontPath(path):
-  return os.path.join(cwd, "fonts", path)
+  return os.path.join(cwd, "src", "Tattva", "fonts", path)
 
 def generateId(prefix):
   import random
