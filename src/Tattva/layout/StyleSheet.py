@@ -1,4 +1,4 @@
-from utils.basic import normalize_quad
+from ..utils.basic import normalize_quad
 
 
 LAYOUT_MODES = {
@@ -15,6 +15,7 @@ class Style:
     self.background_color = args.get("background_color", (255, 255, 255, 255))  # Default white background
     self.border_color = args.get("border_color", (0, 0, 0, 255))  # Default black border
     self.border_width = args.get("border_width", 0)
+    self.align_self = args.get("align_self", None)
 
     padding = args.get("padding", (0, 0, 0, 0))
     margin = args.get("margin", (0, 0, 0, 0))
@@ -23,6 +24,13 @@ class Style:
     justify_content = args.get("justify_content", "flex-start")
     align_items = args.get("align_items", "flex-start")
 
+    border_width = args.get("border_width", 0)
+    border_radius = args.get("border_radius", (0, 0, 0, 0))
+    border_color = args.get("border_color", (0, 0, 0, 255))
+
+    self.border_radius = normalize_quad(border_radius)
+    self.border_width = border_width
+    self.border_color = border_color
 
     # margin = (top, right, bottom, left)
     self.margin = normalize_quad(margin)
