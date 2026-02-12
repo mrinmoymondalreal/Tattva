@@ -1,6 +1,6 @@
 # from pyray import get_char_pressed, get_key_pressed
 # import pyray
-from Tattva import App, Div, Style
+from Tattva import App, Div, Style, Input
 
 i = 0
 
@@ -64,7 +64,8 @@ def root():
               height=25,
               background_color=(255, 255, 0, 255),
             ),
-          )
+          ),
+          Input(placeholder="Type here...", style=Style()),
         ]
       ),
       Div(
