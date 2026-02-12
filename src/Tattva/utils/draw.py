@@ -34,17 +34,17 @@ def text(text, position, font_size = DEFAULTS["font_size"], color = DEFAULTS["co
 #     x, y = position
 #     w, h = size
 #     rtl, rtr, rbl, rbr = border_radius
-    
+
 #     # Calculate Center (Hub of the fan)
 #     center = (x + w / 2, y + h / 2)
-    
-#     seg = 8 
+
+#     seg = 8
 
 #     # 2. Helper: Generate points for one corner
 #     def get_corner_points(start_deg, end_deg, radius, corner_center):
 #         p = []
 #         if radius == 0: return [corner_center]
-        
+
 #         for i in range(seg + 1):
 #             deg = map_value(i, 0, seg, start_deg, end_deg)
 #             rad = math.radians(deg)
@@ -56,10 +56,10 @@ def text(text, position, font_size = DEFAULTS["font_size"], color = DEFAULTS["co
 #     # 3. Generate Perimeter (Counter-Clockwise Order to fix visibility)
 #     # Order: Bottom-Left -> Bottom-Right -> Top-Right -> Top-Left
 #     perimeter = []
-    
+
 #     # Bottom-Left (180 to 90 degrees) - NOTE: Angles reversed for CCW
 #     perimeter.extend(get_corner_points(180, 90, rbl, (x + rbl, y + h - rbl)))
-    
+
 #     # Bottom-Right (90 to 0 degrees)
 #     perimeter.extend(get_corner_points(90, 0, rbr, (x + w - rbr, y + h - rbr)))
 
@@ -83,9 +83,9 @@ def text(text, position, font_size = DEFAULTS["font_size"], color = DEFAULTS["co
 #     if border_width > 0:
 #         for i in range(len(perimeter) - 1):
 #             ry.draw_line_ex(
-#                 perimeter[i], 
-#                 perimeter[i+1], 
-#                 border_width, 
+#                 perimeter[i],
+#                 perimeter[i+1],
+#                 border_width,
 #                 border_color
 #             )
 
@@ -105,7 +105,7 @@ def rect(position, size, color=DEFAULTS["color"], border_radius=(0, 0, 0, 0), bo
     if color and len(color) >= 4 and color[3] > 0:
         center = (x + w / 2, y + h / 2)
         seg = 8
-        
+
         def get_fill_corner(start_deg, end_deg, r, c):
             p = []
             if r == 0: return [c]
@@ -123,19 +123,19 @@ def rect(position, size, color=DEFAULTS["color"], border_radius=(0, 0, 0, 0), bo
             # Close loop
         ]
         perimeter.append(perimeter[0])
-        
+
         ry.draw_triangle_fan([center, *perimeter], len(perimeter) + 1, color)
 
     # --- 2. Draw Border (Thick & Smooth) ---
     if border_width > 0:
         half_w = border_width / 2
-        
+
         # Raylib draw_ring uses standard degrees (0=Right, 90=Down)
         # We draw 4 rings for the corners and 4 lines for the edges.
-        
+
         # --- A. Draw Corners (Rings) ---
         # Note: draw_ring(center, inner_radius, outer_radius, start_angle, end_angle, segments, color)
-        
+
         # Top-Left (180 to 270)
         if rtl > 0:
             ry.draw_ring((x + rtl, y + rtl), rtl - half_w, rtl + half_w, 180, 270, 16, border_color)
@@ -167,29 +167,29 @@ def rect(position, size, color=DEFAULTS["color"], border_radius=(0, 0, 0, 0), bo
 
         # Top Edge
         ry.draw_line_ex(
-            (x + rtl, y), 
-            (x + w - rtr, y), 
+            (x + rtl, y),
+            (x + w - rtr, y),
             border_width, border_color
         )
-        
+
         # Bottom Edge
         ry.draw_line_ex(
-            (x + rbl, y + h), 
-            (x + w - rbr, y + h), 
+            (x + rbl, y + h),
+            (x + w - rbr, y + h),
             border_width, border_color
         )
-        
+
         # Left Edge
         ry.draw_line_ex(
-            (x, y + rtl), 
-            (x, y + h - rbl), 
+            (x, y + rtl),
+            (x, y + h - rbl),
             border_width, border_color
         )
-        
+
         # Right Edge
         ry.draw_line_ex(
-            (x + w, y + rtr), 
-            (x + w, y + h - rbr), 
+            (x + w, y + rtr),
+            (x + w, y + h - rbr),
             border_width, border_color
         )
 

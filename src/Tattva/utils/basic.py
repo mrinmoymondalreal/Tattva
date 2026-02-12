@@ -14,23 +14,20 @@ def generateId(prefix):
   suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
   return f"{prefix}_{suffix}"
 
-def normalize_quad(value):
-    # Case 1: Single Integer -> All 4 sides same
+def normalize_quad(value, to = 4):
     if isinstance(value, (int, float)):
-        return (value, value, value, value)
-    
-    # Case 2: Tuple/List handling
-    if isinstance(value, (tuple, list)):
-        # (Top/Bottom, Left/Right) -> (Top, Right, Bottom, Left)
-        if len(value) == 2:
+        return (value,) * to
+    elif isinstance(value, (list, tuple)):
+        if len(value) == 1:
+            return value * to
+        elif len(value) == 2:
             return (value[0], value[1], value[0], value[1])
-        
-        # (Top, Right, Bottom, Left) -> Returns as is
-        elif len(value) == 4:
-            return tuple(value)
-
-    # Fallback (optional)
-    return (0, 0, 0, 0)
+        elif len(value) == 3:
+            return (value[0], value[1], value[2], value[1])
+        elif len(value) >= 4:
+            return tuple(value[:to])
+    else:
+        raise ValueError("Invalid input for normalize_quad")
 
 def map_value(value, start1, stop1, start2, stop2):
     return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))

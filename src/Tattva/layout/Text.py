@@ -1,28 +1,22 @@
-from .Layout import Layout
-from ..utils.draw import text, measureText
-from .StyleSheet import Style
+from Tattva.layout.Container import Container
+from Tattva.utils.draw import measureText, text
 
-class Text(Layout):
-  def __init__(self, text, styles = None, **args):
-    styles = styles or Style()
-    self.styles = styles
-    self.setText(text)
-    # self.text = text
-    # size = measureText(text, font_size=styles.font_size, font=styles.font, spacing=styles.spacing)
-    # width, height = (int(size.x), int(size.y))
-    super().__init__(x=0, y=0, width=self.width, height=self.height, styles=styles, **args)
+class Text(Container):
+  def __init__(self, text, **args):
+    super().__init__(**args)
+    self.set_text(text)
     self.__type__ = "TEXT"
 
-  def setText(self, text):
+  def set_text(self, text):
     self.text = text
-    size = measureText(text, font_size=self.styles.font_size, font=self.styles.font, spacing=self.styles.spacing)
-    self.width, self.height = (int(size.x), int(size.y))
-    
-  def draw(self):
+    size = measureText(text, font_size=self.style.font_size, font=self.style.font_family, spacing=self.style.letter_spacing)
+    self.set_dimensions(int(size.x), int(size.y))
+
+  def render(self):
+    left, top, width, height = self.get_draw_bounds()
     text(
         self.text,
-        self.getPos(),
-        font_size=self.styles.font_size,
-        color=self.styles.color,
+        (left, top),
+        font_size=self.style.font_size,
+        color=self.style.color,
     )
-
