@@ -1,75 +1,88 @@
 # from pyray import get_char_pressed, get_key_pressed
 # import pyray
-from Tattva import App, Div, Root, Text, LAYOUT_MODES, Style
+from Tattva import App, Div, Style
 
-def Menu():
-  arr = []
-  items = ["Home", "About", "Contact", "Blog", "Careers"]
+i = 0
 
-  def onClick(self, item, b = True):
-    self.styles.border_radius = (20, 20, 20, 20) if b else (0, 0, 0, 0)
-    if b: print(f"Clicked on {item}", self.parent.__ID__)
-
-  col = (186, 143, 187, 255)
-
-  def onHover(self, is_hovered, mouse_pos):
-    self.styles.background_color = (186, 203, 187, 255) if is_hovered else col
-
-  for i in range(len(items)):
-    arr.append(Div(200, 25,
-      styles=Style(
-        mode=LAYOUT_MODES["FIXED"],
-        background_color=col,
-        justify_content="space-between",
-        padding=10,
-        margin=(0, 0, 10 if i < len(items) - 1 else 0, 0),
-        align_items="center"
-      ),
-      onMouseDown=lambda self, item=items[i]: onClick(self, item),
-      onMouseUp=lambda self, item=items[i]: onClick(self, item, False),
-      onHover=onHover,
-      children=[
-        Text(items[i], styles=Style(font_size=30, color=(255, 255, 255, 255))),
-        Div(25, 25, styles=Style(background_color=(255, 0, 0, 255), mode=LAYOUT_MODES["FIXED"]))
-      ],
-    ))
-  return arr
+def inc():
+  global i
+  i += 1
+  return i
 
 def root():
-  return Root(children=[
-  Div(
-    width=800, height=450,
-    styles=Style(
-      background_color=(255, 200, 200, 100),
-      mode=LAYOUT_MODES["FIXED"],
-      justify_content="center",
-      align_items="center"
-    ),
+
+  btn_style = Style(
+    padding=20,
+    background_color=(255, 0, 0, 255),
+    justify_content="center",
+    align_items="stretch",
+    min_width = 300,
+    min_height = 300,
+    flex_direction="column"
+  )
+
+  def on_enter():
+      btn_style.background_color = (0, 0, 255, 255)
+
+  def on_leave():
+      btn_style.background_color = (200, 200, 200, 255)
+
+  return Div(
+    style=btn_style,
+    id="main_div",
+    on_click=lambda: print("Main Div Clicked!", inc()),
+    on_mouse_enter=on_enter,
+    on_mouse_leave=on_leave,
     children=[
       Div(
-        width=400, height=200,
-        styles=Style(
-          background_color=(247, 193, 24, 255),
-          padding=10,
-          direction="column",
-          border_radius=(400 + 200) // 2,
-          border_width=10,
-          border_color=(0, 0, 255, 255)
+        style=Style(
+          width=50,
+          height=25,
+          background_color=(0, 0, 255, 255),
+          # padding=5,
+          # margin=5,
+          min_width=190, min_height=95,
+          justify_content="flex-end",
+          align_items="center",
+          flex_direction="column",
+          gap=20
         ),
-        children=Menu()
+        id="main_child_div",
+        children=[
+          Div(
+            id="inner_child",
+            style=Style(
+              width=25,
+              height=25,
+              background_color=(255, 255, 0, 255),
+            ),
+          ),
+          Div(
+            id="inner_child",
+            style=Style(
+              width=25,
+              height=25,
+              background_color=(255, 255, 0, 255),
+            ),
+          )
+        ]
       ),
       Div(
-        width=400, height=200,
-        styles=Style(
-          background_color=(247, 193, 24, 255),
-          padding=10,
-          direction="column",
-          margin=(0, 20, 0, 0)
+        style=Style(
+          width=50,
+          height=75,
+          background_color=(25, 0, 0, 255),
         ),
-        children=Menu()
-      )
+        id="second_child_div",
+      ),
+      Div(
+        style=Style(
+          width=50,
+          height=50,
+          background_color=(0, 255, 0, 255),
+        ),
+      ),
     ]
   )
-])
 
 App((800, 450), "Demo App", root)
